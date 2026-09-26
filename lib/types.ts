@@ -27,25 +27,29 @@ export type Transaction = {
   quantity: number
   timestamp: string // ISO string
   linkedTransactionId?: string // pairs TRANSFER_OUT with TRANSFER_IN
+  status?: 'SUCCESS' | 'FAILED'
+  failureReason?: string
 }
+
+export type StaffRole = 'viewer' | 'manager' | 'admin' | 'staff'
 
 export type StaffUser = {
   id: string
   name: string
-  role: 'staff'
+  role: StaffRole
+  assignedWarehouseId?: string
 }
 
 // Low-stock status shared by the inventory table and status badge.
-export type StockStatus = 'ok' | 'low' | 'critical'
+export type StockStatus = 'ok' | 'low'
 
 export function getStockStatus(product: Product): StockStatus {
-  if (product.currentStock < product.reorderThreshold) return 'critical'
-  if (product.currentStock === product.reorderThreshold) return 'low'
+  if (product.currentStock <= product.reorderThreshold) return 'low'
   return 'ok'
 }
 
 export function getStockStatusLabel(status: StockStatus): string {
-  if (status === 'critical') return 'Below threshold'
-  if (status === 'low') return 'At threshold'
+  if (status === 'low') return 'Low stock'
   return 'In stock'
 }
+

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Archivo, IBM_Plex_Sans } from 'next/font/google'
 import './globals.css'
+import { AuthProvider } from '@/context/AuthContext'
 
 const archivo = Archivo({
   subsets: ['latin'],
@@ -15,7 +16,7 @@ const plexSans = IBM_Plex_Sans({
 
 export const metadata: Metadata = {
   title: 'StockLite — Warehouse Inventory',
-  description: 'Warehouse inventory system for the StockLite coding exercise.',
+  description: 'Warehouse inventory system with atomic operations and Obsidian topology graph.',
 }
 
 export default function RootLayout({
@@ -25,7 +26,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${archivo.variable} ${plexSans.variable}`}>
-      <body>{children}</body>
+      <body>
+        <AuthProvider>{children}</AuthProvider>
+      </body>
     </html>
   )
 }
